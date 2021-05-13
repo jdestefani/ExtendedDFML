@@ -1,0 +1,43 @@
+Package: ExtendedDFML
+Title: Extended Dynamic Factor Machine Learner
+Version: 0.1.0.0
+Authors@R: 
+  person(given = "Jacopo",
+         family = "De Stefani",
+         role = c("aut", "cre"),
+         email = "jacopo.de.stefani@gmail.com",
+         comment = c(ORCID = "0000-0003-0257-4537"))
+Description: The package implement a modular version of the DFML Algorithm (https://doi.org/10.1007/s41060-018-0150-x), supporting multiple forecasting techniques and multiple dimensionaliity reduction techniques.
+    The forecasting techniques supported are the M4 benchmarks (via a custom package), 
+    state-of-the-art multistep ahead techniques (k-NN, RF both in a direct and recursive fashion and MIMO, via gbcode),
+    and gradient boosting techniques (XGBoost and LightGBM, via the corresponding packages).
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Requires:
+    keras (>= 2.2.4),
+    gbcode,
+    MultivariateStatisticalBenchmarksTS,
+    abind,
+    onlinePCA,
+    vars,
+    forecast,
+    dse,
+    parallel,
+    xgboost,
+    lightgbm
+Imports:
+    keras (>= 2.2.4),
+    gbcode,
+    MultivariateStatisticalBenchmarksTS,
+    abind,
+    onlinePCA,
+    vars,
+    forecast,
+    dse,
+    xgboost,
+    lightgbm
+Suggests: testthat
+

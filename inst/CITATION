@@ -1,0 +1,16 @@
+citHeader("To cite ExtendedDFML in publications use:")
+
+citEntry(
+  entry    = "misc",
+  title    = "Extended Dynamic Factor Machine Learner",
+  author   = person(given = "Jacopo",
+           family = "De Stefani",
+           comment = c(ORCID = "0000-0003-0257-4537")),
+  journal  = "GitHub",
+  year     = "2021",
+  url      = "https://github.com/jdestefani/EDFML",
+  textVersion = paste("Jacopo De Stefani (ORCID: 0000-0003-0257-4537) (2021).",
+                      "Extended Dynamic Factor Machine Learner.",
+                      "URL https://github.com/jdestefani/EDFML"
+  )
+)
