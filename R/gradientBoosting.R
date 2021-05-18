@@ -8,6 +8,14 @@
 #' @param delay - Delay for forecasting
 #' @param multistep_method - Multistep method (to be chosen among "recursive" and "direct")
 #' @param forecasting_method - Gradient boosting forecasting method (to be chosen among "lightgbm" and "xgboost")
+#' @param forecasting_params - Parameters to be passed to the forecaster function - List
+#'                              \itemize{
+#'                                 \item{\code{multistep_method:}{Multistep method to be chosen between \code{direct} and \code{recursive}}}
+#'                                 \item{\code{forecasting_method:}{Forecasting method to be chosen between \code{lightgbm} and \code{xgboost}}}
+#'                               }
+#'                               
+#'                              See \pkg{lightgbm} and \pkg{xgboost} documentation for the role of the different parameters
+#'                     
 #'
 #' @return h-step forecast of ts using the chosen multistep_method and forecasting method, with the given embedding order
 gradientBoostingForecaster <- function(ts,

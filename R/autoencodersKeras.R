@@ -2,13 +2,23 @@
 #' 
 #' Wrapper function for all the different keras autoencoder implementations
 #'
-#' @param X - nxN matrix containing the N time series as columns, each one of length n time steps
-#' @param method - Autoencoder type (from AUTOENCODER_METHODS list)
-#' @param latent_dim - Number of latent dimensions
-#' @param time_window - Size of time window (in time steps)
-#' @param epochs - Number of epochs required for training
-#' @param batch_size - Batch size required for training
+#' @param X - nxN matrix containing the N time series as columns, each one of length n time steps - Numeric
+#' @param method - Autoencoder type (from AUTOENCODER_METHODS list) - String
+#' @param latent_dim - Number of latent dimensions - Numeric
+#' @param time_window - Size of time window (in time steps) - Numeric
+#' @param epochs - Number of epochs required for training - Numeric
+#' @param batch_size - Batch size required for training - Numeric
 #' @param optimizer_params - Optimizer parameters for keras fit function
+#'                           \itemize{
+#'                           \item{\code{loss}: }{Loss function used for optimization (among those defined by Keras) - String}
+#'                            \item{\code{optimizer}: }{Optimizer function used for optimization (among those defined by Keras) - String}
+#'                           }  
+#' 
+#' @param embedding_params - Paramaters to control the embedding process
+#'                           \itemize{
+#'                           \item{\code{padNA}: }{Value used to indicate whether incomplete tensors should be dropped or filled with NAs - Boolean}
+#'                            \item{\code{shift}: }{Number of time step that be skipped in order to determine the start of the following tensor - Numeric}
+#'                           }
 #'
 #' @return List containing:
 #'         \itemize{
@@ -132,7 +142,7 @@ autoencoder_keras <- function(X,
 #'         \item{\code{time_window}: }{Time window used for the embedding (to fit the autoencoder) - Numeric scalar}
 #'         \item{\code{train_history}: }{Object containing statistics on the training history - Keras object}
 #'         }
-
+#'
 incremental_autoencoder_keras_update <- function(X_update,
                                           method,
                                           model,
@@ -202,6 +212,7 @@ incremental_autoencoder_keras_update <- function(X_update,
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
 #'
 BaseAutoencoder <- function(X,latent_dim){
   input_tensor <- layer_input(shape = c(ncol(X)))
@@ -238,7 +249,7 @@ BaseAutoencoder <- function(X,latent_dim){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
-#'
+#'         }
 BaseRegularizedAutoencoder <- function(X,latent_dim){
   input_tensor <- layer_input(shape = c(ncol(X)))
   encoded <- input_tensor %>% layer_dense(units = latent_dim, activation = "relu", activity_regularizer=regularizer_l1(10e-5))
@@ -274,6 +285,7 @@ BaseRegularizedAutoencoder <- function(X,latent_dim){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
 #'
 DeepAutoencoder <- function(X,latent_dim=c(10,5,2)){
   input_tensor <- layer_input(shape = c(ncol(X)))
@@ -322,6 +334,7 @@ DeepAutoencoder <- function(X,latent_dim=c(10,5,2)){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
 #'
 Convolutional1DAutoencoder <- function(X,filters=c(32,32,16)){
   # https://machinelearningmastery.com/how-to-develop-convolutional-neural-networks-for-multi-step-time-series-forecasting/
@@ -385,6 +398,7 @@ Convolutional1DAutoencoder <- function(X,filters=c(32,32,16)){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
 #'
 Convolutional2DAutoencoder <- function(X,filters=c(32,32)){
 
@@ -448,7 +462,8 @@ Convolutional2DAutoencoder <- function(X,filters=c(32,32)){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
-#'
+#'         }
+#'         
 LSTMAutoencoder <- function(X,latent_dim=3,time_window=5){
 
   # From https://towardsdatascience.com/step-by-step-understanding-lstm-autoencoder-layers-ffab055b6352
@@ -533,6 +548,8 @@ LSTMDenseAutoencoder <- function(X,latent_dim=3,time_window=5){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
+#'
 #'
 DeepLSTMAutoencoder <- function(X,latent_dim=c(10,5),time_window=5){
 
@@ -586,6 +603,7 @@ DeepLSTMAutoencoder <- function(X,latent_dim=c(10,5),time_window=5){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
 #'
 GRUAutoencoder <- function(X,latent_dim=3,time_window=5){
 
@@ -636,6 +654,7 @@ GRUAutoencoder <- function(X,latent_dim=3,time_window=5){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
 #'
 DeepGRUAutoencoder <- function(X,latent_dim=c(10,5),time_window=5){
 
@@ -688,6 +707,7 @@ DeepGRUAutoencoder <- function(X,latent_dim=c(10,5),time_window=5){
 #'         \item{\code{autoencoder}: }{Fitted autoencoder model (full model) - Keras object}
 #'         \item{\code{encoder}: }{Encoder part of the autoencoder model (Original space -> Latent Dimensions) - Keras object}
 #'         \item{\code{decoder}: }{Decoder part of the autoencoder model (Latent Dimensions -> Original space) - Keras object}
+#'         }
 #'
 LSTMConvolutional1DAutoencoder <- function(X,latent_dim=c(32,32,16)){
   # https://machinelearningmastery.com/how-to-develop-convolutional-neural-networks-for-multi-step-time-series-forecasting/

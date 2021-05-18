@@ -25,10 +25,11 @@
 #' @param h - Forecasting horizon - numeric scalar
 #' 
 #' @import gbcode
+#' @import MM4Benchmark
 #'
 #' @return List containing:
 #'         \itemize{
-#'         \item{\code{Z_hat}: }{k x h matrix containing the h-step ahead forecast for the k input series}
+#'         \item{\code{Z_hat}: }{h x k matrix containing the h-step ahead forecast for the k input series}
 #'         \item{\code{time_forecast}: }{Computational time required to run the forecasting model - numeric scalar}
 #'         }
 #' @examples 
@@ -69,11 +70,11 @@ forecaster <- function(Z,
                parameters$method <- match.arg(parameters$method,M4_METHODS)
                ptm <- proc.time()
                switch (parameters$method,
-                       ES={forecast_list <- apply(Z, 2, MultivariateStatisticalBenchmarksTS::ESBenchmark ,h=h)},
-                       holt_winters={forecast_list <- apply(Z, 2, MultivariateStatisticalBenchmarksTS::HoltWintersBenchmark ,h=h)},
-                       holt_winters_damped={forecast_list <- apply(Z, 2, MultivariateStatisticalBenchmarksTS::HoltWintersDampedBenchmark ,h=h)},
-                       theta={forecast_list <- apply(Z, 2, MultivariateStatisticalBenchmarksTS::thetaBenchmark ,h=h)},
-                       combined={forecast_list <- apply(Z, 2, MultivariateStatisticalBenchmarksTS::combinedBenchmark ,h=h)}
+                       ES={forecast_list <- apply(Z, 2,  MM4Benchmark::ESBenchmark ,h=h)},
+                       holt_winters={forecast_list <- apply(Z, 2,  MM4Benchmark::HoltWintersBenchmark ,h=h)},
+                       holt_winters_damped={forecast_list <- apply(Z, 2,  MM4Benchmark::HoltWintersDampedBenchmark ,h=h)},
+                       theta={forecast_list <- apply(Z, 2,  MM4Benchmark::thetaBenchmark ,h=h)},
+                       combined={forecast_list <- apply(Z, 2,  MM4Benchmark::combinedBenchmark ,h=h)}
                )
                time_forecast <- proc.time() - ptm
                Z_hat <- as.matrix(Reduce(cbind,lapply(forecast_list,function(x){x$forecasts})))

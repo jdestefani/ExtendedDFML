@@ -19,24 +19,26 @@ RoxygenNote: 7.1.1
 Requires:
     keras (>= 2.2.4),
     gbcode,
-    MultivariateStatisticalBenchmarksTS,
+    MM4Benchmark,
     abind,
     onlinePCA,
     vars,
     forecast,
     dse,
+    autoencoder,
     parallel,
     xgboost,
     lightgbm
 Imports:
     keras (>= 2.2.4),
     gbcode,
-    MultivariateStatisticalBenchmarksTS,
+    MM4Benchmark,
     abind,
     onlinePCA,
     vars,
     forecast,
     dse,
+    autoencoder,
     xgboost,
     lightgbm
 Suggests: testthat

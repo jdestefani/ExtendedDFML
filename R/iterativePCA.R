@@ -141,7 +141,7 @@ incrementalPCA <- function(X,
 #'         \item{\code{x_bar}: }{1 x N matrix containing the means of the N input time series}
 #'         }
 iterativePCASingleStep <- function(X_i,i,pca_type,xbar,pca,forgetting_factor=NA,components){
-  xbar <- updateMean(xbar, X_i, i-1)
+  xbar <- onlinePCA::updateMean(xbar, X_i, i-1)
   switch(pca_type,
          incrpca={f <- if(is.na(forgetting_factor)) (1/(i-1)) else forgetting_factor
          pca <- onlinePCA::incRpca(pca$values, pca$vectors, X_i, i-1, f = f , q = components,center = xbar)},

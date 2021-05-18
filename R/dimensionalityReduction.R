@@ -136,13 +136,15 @@ dimensionalityReduction <- function(X,k,family=DIMENSIONALITY_METHODS,params=lis
 #' The remaining part of \code{X} is used to incrementally fit the dimensionality reduction model 
 #'
 #' @param X - n x N matrix containing the N time series as columns, each one of length n time steps
-#' @param init_sample_petercentage - Numeric value indicating the percentage of \code{X} to be used for model fit - Numeric
+#' @param init_sample_percentage - Numeric value indicating the percentage of \code{X} to be used for model fit - Numeric
 #' @param k - Number of desired factors as output - Numeric
 #' @param family - Family of methods to use - String among those defined in DIMENSIONALITY_METHODS
 #' @param params - Parameters to be passed to the function - List
 #'                 
 #'                 An (optional) pre-existing model is passed through the \code{parameters$model}.
 #'                 If NULL it will be computed by the function. 
+#'                 
+#' @import autoencoder
 #'
 #' @return List containing:
 #'         \itemize{
@@ -220,7 +222,7 @@ incrementalDimensionalityReduction <- function(X,init_sample_percentage,k,family
                stop('Wrong dimensionality reduction method used - Choose between "PCA" or "Autoencoder"')
            }
     )
-    return(list(Z=na.omit(Z),time_dim=time_dim[3],model=model))
+    return(list(Z=stats::na.omit(Z),time_dim=time_dim[3],model=model))
 }
 
  
@@ -250,8 +252,12 @@ incrementalDimensionalityReduction <- function(X,init_sample_percentage,k,family
 #' #See tests/testthat directory on https://github.com/jdestefani/ExtendedDFML
 incrementalDimensionalityReductionUpdate <- function(X_base,X_update,k,family=DIMENSIONALITY_METHODS,params=list(model=NULL)){
     # Add dimensionality check/tests on data
-    if(typeof(X) != "matrix"){
-        X <- as.matrix(X)
+    if(typeof(X_base) != "matrix"){
+        X_base <- as.matrix(X_base)
+    }
+    
+    if(typeof(X_update) != "matrix"){
+        X_update <- as.matrix(X_update)
     }
     
     # 1. If there is no model for the initialization, fit a model using the standard dimensionality reduction function
@@ -272,7 +278,7 @@ incrementalDimensionalityReductionUpdate <- function(X_base,X_update,k,family=DI
                xbar <- apply(as.matrix(X_base), 2, mean)
                
                for(i in 1:dim(X_update)[1]){
-                   incremental_pca_results <- iterativePCASingleStep(X_update[i,],dim(X)[1]+i,params$pca_type,xbar,pca,NA,k)
+                   incremental_pca_results <- iterativePCASingleStep(X_update[i,],dim(X_base)[1]+i,params$pca_type,xbar,pca,NA,k)
                    xbar <- incremental_pca_results$xbar
                    pca <- incremental_pca_results$pca
                }
