@@ -105,7 +105,7 @@ lightGBMDirect <- function(ts_embed,
                              lgb.embed,
                              nrounds = n_rounds,
                              verbose = verbose)
-    Y_hat_direct <- c(Y_hat_direct,lightgbm::predict(model_direct, dat =  matrix(ts_embed$inp[nrow(ts_embed$inp),],nrow=1)))
+    Y_hat_direct <- c(Y_hat_direct,predict(model_direct, dat =  matrix(ts_embed$inp[nrow(ts_embed$inp),],nrow=1)))
   }
   return(Y_hat_direct)
 }
@@ -158,7 +158,7 @@ lightGBMRecursive <- function(ts_embed,
                               verbose = verbose)
   X_input <- matrix(ts_embed$inp[nrow(ts_embed$inp),],nrow=1)
   for (h in 1:horizon) {
-    Y_hat_current <- lightgbm::predict(model_recursive, dat = X_input)
+    Y_hat_current <- predict(model_recursive, dat = X_input)
     Y_hat_recursive <- c(Y_hat_recursive,Y_hat_current)
 
     X_input <-  matrix(c(X_input[-1],Y_hat_current),nrow=1)
@@ -214,7 +214,7 @@ xgboostDirect <- function(ts_embed,
                             nrounds = n_rounds,
                             objective = "reg:squarederror",
                             verbose = verbose)
-    Y_hat_direct <- c(Y_hat_direct,xgboost::predict(model_direct,matrix(ts_embed$inp[nrow(ts_embed$inp),],nrow=1)))
+    Y_hat_direct <- c(Y_hat_direct,predict(model_direct,matrix(ts_embed$inp[nrow(ts_embed$inp),],nrow=1)))
   }
   return(Y_hat_direct)
 }
@@ -267,7 +267,7 @@ xgboostRecursive <- function(ts_embed,
 
   X_input <- matrix(ts_embed$inp[nrow(ts_embed$inp),],nrow=1)
   for (h in 1:horizon) {
-    Y_hat_current <- xgboost::predict(model_recursive,X_input)
+    Y_hat_current <- predict(model_recursive,X_input)
     Y_hat_recursive <- c(Y_hat_recursive,Y_hat_current)
     X_input <-  matrix(c(X_input[-1],Y_hat_current),nrow=1)
   }

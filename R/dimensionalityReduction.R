@@ -61,7 +61,7 @@ dimensionalityReduction <- function(X,k,family=DIMENSIONALITY_METHODS,params=lis
                                        max.iterations=50000,rescale.flag=TRUE)
                    time_fit <- (proc.time() - ptm)[3]
                    ptm <- proc.time()
-                   Z <- autoencoder::predict(encoder,X,hidden.output=TRUE)$X.output
+                   Z <- predict(encoder,X,hidden.output=TRUE)$X.output
                    time_dim <- time_fit + (proc.time() - ptm)[3]
                    model <- encoder
                }

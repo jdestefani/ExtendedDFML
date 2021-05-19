@@ -41,5 +41,6 @@ Imports:
     autoencoder,
     xgboost,
     lightgbm
-Suggests: testthat
+Suggests: testthat,
+          MEMTS
 
