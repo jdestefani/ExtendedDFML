@@ -20,6 +20,7 @@
 #'         }
 #'
 #' @import autoencoder
+#' @export
 #'
 #' @examples 
 #' #See tests/testthat directory on https://github.com/jdestefani/ExtendedDFML
@@ -334,7 +335,8 @@ incrementalDimensionalityReductionUpdate <- function(X_base,X_update,k,family=DI
 #'         \item{\code{X_hat}: }{h x N matrix containing the h-step ahead forecast for the N original series}
 #'         \item{\code{time_dim}: }{Computational time (in s) required to run the dimensionality increase - numeric scalar}
 #'         }
-#' 
+#'         
+#' @export
 #' @examples 
 #' #See tests/testthat directory on https://github.com/jdestefani/ExtendedDFML
 dimensionalityIncrease <- function(Z_hat,family=DIMENSIONALITY_METHODS,model=NULL,Z=NULL,params=NULL){
