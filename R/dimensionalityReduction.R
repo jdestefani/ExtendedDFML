@@ -460,6 +460,19 @@ GramSchmidtOrthogonalization <- function(Z,Z_hat,k){
     return(U)
 }
 
+#' vectorProject
+#' 
+#' Auxiliary function to compute vector projection of vector u onto vector v.
+#'
+#' @param u - Numeric vector to project
+#' @param v - Numeric vector on which u needs to be projected
+#'
+#' @return - Numeric vector representing the result of the projection 
+vectorProject <- function(u,v){
+    return(u*as.numeric(u%*%v)/as.numeric(u%*%u))
+    
+}
+
 
 #' decode
 #' 
