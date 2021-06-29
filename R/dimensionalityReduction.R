@@ -444,7 +444,7 @@ GramSchmidtOrthogonalization <- function(Z,Z_hat,k){
             
             for (j in 1:(i-1)){
                 # Project ZZ onto U component by component
-                p=p+ExtendedDFML::vectorProject(U[,j],ZZ[,i])
+                p=p+vectorProject(U[,j],ZZ[,i])
             }
             # Remove the projected components from U
             U[,i]=ZZ[,i]-p
