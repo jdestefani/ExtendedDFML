@@ -26,6 +26,7 @@
 #' 
 #' @import gbcode
 #' @import MM4Benchmark
+#' @export
 #'
 #' @return List containing:
 #'         \itemize{

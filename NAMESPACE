@@ -3,6 +3,7 @@
 export(DFML)
 export(dimensionalityIncrease)
 export(dimensionalityReduction)
+export(forecaster)
 export(matrix2Tensor3D)
 export(tensor3D2matrix)
 import(MM4Benchmark)
